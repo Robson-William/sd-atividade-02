@@ -23,14 +23,6 @@ app.get("/home", (req, res) => {
 
     const telaConfig = JSON.parse(telaConfigData);
 
-    // nunjucks.render('index.njk', {telaConfig }, (err, html) => {
-    //     if (err) {
-    //         res.status(500).send(err.message);
-    //     } else {
-    //         res.send(html);
-    //     }
-    // });
-
     res.render("search.njk", {telaConfig});
 });
 
