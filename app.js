@@ -13,6 +13,10 @@ nunjucks.configure('src/views', {
     express: app
 });
 
+app.get("/", (req, res) => {
+    res.render("landingpage.njk");
+})
+
 app.get("/home", (req, res) => {
 
     const telaConfigData = fs.readFileSync("./telaConfig.json", "utf8");
@@ -27,7 +31,7 @@ app.get("/home", (req, res) => {
     //     }
     // });
 
-    res.render("index.njk", {telaConfig});
+    res.render("search.njk", {telaConfig});
 });
 
 app.listen(8000, () => {
