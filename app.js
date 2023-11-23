@@ -2,6 +2,7 @@ import express from "express";
 import nunjucks from "nunjucks";
 import * as middleware from "./src/middleware/authorization.js";
 import cookieParser from 'cookie-parser';
+import bodyParser from "body-parser";
 import session from 'express-session';
 import { config } from "dotenv";
 import fs  from "fs";
@@ -14,6 +15,8 @@ app.use(express.static('public'));
 app.set('view engine', 'njk');
 app.use(express.urlencoded({ extended: false}));
 app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
@@ -37,6 +40,29 @@ app.get("/search", middleware.authenticate, (req, res) => {
     const telaConfig = JSON.parse(telaConfigData);
 
     res.render("search.njk", {telaConfig});
+});
+
+let comments = [];
+
+app.get('/api/comments', (req, res) => {
+  res.json(comments);
+});
+
+app.post('/api/comments', (req, res) => {
+  const { author, text } = req.body;
+
+  if (author && text) {
+    const newComment = { author, text };
+    comments.push(newComment);
+
+    res.redirect('/comments');
+  } else {
+    res.status(400).json({ error: 'Author and text are required.' });
+  }
+});
+
+app.get('/comments', (req, res) => {
+  res.render('comentarios.njk', { comments });
 });
 
 app.listen(8000, () => {
