@@ -4,10 +4,13 @@
 
 {% block content %}
     <script src="https://accounts.google.com/gsi/client" async></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
-        function handleCredentialResponse(response) {
-    
+        async function handleCredentialResponse(response) {
+            const { credential } = response;
+            console.log(credential);
+            const res = await axios.post('http://localhost:3000/auth/login', { credential });
         }
         window.onload = function () {
             google.accounts.id.initialize({

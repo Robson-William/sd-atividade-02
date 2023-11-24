@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import session from 'express-session';
 import { config } from "dotenv";
 import fs  from "fs";
+import cors from "cors";
 config();
 
 const app = express();
@@ -28,6 +29,8 @@ nunjucks.configure('src/views', {
     autoescape: true,
     express: app
 });
+
+app.use(cors());
 
 app.get("/", (req, res) => {
     res.render("landingpage.njk");
